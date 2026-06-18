@@ -14,19 +14,17 @@ class PendaftaranPrestasi extends Pendaftaran {
         $this->tingkatPrestasi = $tingkatPrestasi;
     }
 
-    // Implementasi Method Abstrak: Mendapat potongan 50% dari biaya pendaftaran dasar
+    // Overriding: Jalur Prestasi (Potongan Rp 50.000)
     public function hitungTotalBiaya() {
-        return $this->biayaPendaftaranDasar * 0.50;
+        return $this->biayaPendaftaranDasar - 50000;
     }
 
-    // Implementasi Method Abstrak
+    // Implementasi Method Abstrak Info Jalur
     public function tampilkanInfoJalur() {
         return "Jalur: Prestasi | Jenis: {$this->jenisPrestasi} | Tingkat: {$this->tingkatPrestasi}";
     }
 
-    // ============================================================
-    // METODE QUERY SPESIFIK (Mengambil data khusus Prestasi)
-    // ============================================================
+    // Metode Query Spesifik Prestasi
     public static function getDaftarPrestasi($db) {
         $query = "SELECT id_pendaftaran, nama_calon, asal_sekolah, nilai_ujian, biaya_pendaftaran_dasar, jenis_prestasi, tingkat_prestasi 
                   FROM tabel_pendaftaran 
@@ -34,7 +32,7 @@ class PendaftaranPrestasi extends Pendaftaran {
         
         $stmt = $db->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 }
 ?>
