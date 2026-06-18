@@ -9,25 +9,22 @@ class PendaftaranReguler extends Pendaftaran {
 
     // Constructor Subclass
     public function __construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biayaPendaftaranDasar, $pilihanProdi, $lokasiKampus) {
-        // Memanggil constructor dari abstract class induk (Pendaftaran)
         parent::__construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biayaPendaftaranDasar);
         $this->pilihanProdi = $pilihanProdi;
         $this->lokasiKampus = $lokasiKampus;
     }
 
-    // Implementasi Method Abstrak: Menghitung total biaya (Jalur Reguler = Biaya Dasar)
+    // Overriding: Jalur Reguler (Tarif standar murni)
     public function hitungTotalBiaya() {
         return $this->biayaPendaftaranDasar;
     }
 
-    // Implementasi Method Abstrak: Menampilkan info spesifik jalur
+    // Implementasi Method Abstrak Info Jalur
     public function tampilkanInfoJalur() {
         return "Jalur: Reguler | Prodi: {$this->pilihanProdi} | Lokasi: {$this->lokasiKampus}";
     }
 
-    // ============================================================
-    // METODE QUERY SPESIFIK (Mengambil data khusus Reguler)
-    // ============================================================
+    // Metode Query Spesifik Reguler
     public static function getDaftarReguler($db) {
         $query = "SELECT id_pendaftaran, nama_calon, asal_sekolah, nilai_ujian, biaya_pendaftaran_dasar, pilihan_prodi, lokasi_kampus 
                   FROM tabel_pendaftaran 
@@ -35,7 +32,7 @@ class PendaftaranReguler extends Pendaftaran {
         
         $stmt = $db->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_OBJ); // Menggunakan FETCH_OBJ agar cocok dengan index.php
     }
 }
 ?>
